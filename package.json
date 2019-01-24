@@ -1,0 +1,35 @@
+{
+  "name": "oipf-object-polyfill",
+  "version": "0.0.2",
+  "description": "Library implementing a polyfill for the oipfObjectFactory in HbbTV, and also supports declaration of objects in the DOM",
+  "keywords": [
+    "dvb",
+    "HbbTV",
+    "OIPF"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2-IMMERSE/oipf-object-polyfill"
+  },
+  "main": "src/main.js",
+  "author": {
+    "name": "British Broadcasting Corporation",
+    "url": "http://www.bbc.co.uk/rd"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-jasmine": "^1.0.3",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-webpack": "^1.0.11",
+    "webpack": "^1.13.1"
+  },
+  "dependencies": {
+    "weak-map": "^1.0.5"
+  },
+  "scripts": {
+    "prepublish": "grunt build",
+    "test": "grunt test"
+  }
+}
