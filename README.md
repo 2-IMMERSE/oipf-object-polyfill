@@ -3,7 +3,7 @@
 **This is a [polyfill](https://en.wikipedia.org/wiki/Polyfill) that implements the
  [oipfObjectFactory](http://www.oipf.tv/web-spec/volume5.html#object-factory-api) used in [HbbTV](https://www.hbbtv.org/) and a framework for adding code to support your own object types.**
 
-HbbTV/OIPF defines the use of the <object> element to implement various APIs. Applications can create these objects in several ways. The following are supported by this polyfill:
+HbbTV/OIPF defines the use of the \<object\> element to implement various APIs. Applications can create these objects in several ways. The following are supported by this polyfill:
 
 1. By declaring them in the HTML:
 
@@ -106,7 +106,7 @@ In the example above, a new object type is defined. It has a single simple metho
 If there is already an existing `oipfObjectFactory` object then this polyfill will not replace it but will instead try to add new `createXXXX()` methods to the existing one.
 
 The net result is a webpage that will behave much like expected.
-You can declare <object> elements in the page itself:
+You can declare \<object\> elements in the page itself:
     
     <body>
         <object id="1" type="x-mycompany/my-object"></object>
@@ -147,46 +147,52 @@ This could be implementation dependent.
 
 So, for example, the following might fail because MutationObserver event
 handlers have not had a chance to run:
+```javascript
+newObj = document.createElement("object");
+newObj.type = "x-mycompany/my-object";
 
-    newObj = document.createElement("object");
-    newObj.type = "x-mycompany/my-object";
+// the effect of setting newObj.type will not change the object until
+// event handlers get to run. Therefore the next function call could
+// fail...
 
-    // the effect of setting newObj.type will not change the object until
-    // event handlers get to run. Therefore the next function call could
-    // fail...
-
-    newObj.myfunc();    // fails
+newObj.myfunc();    // fails
+```
 
 Your code should wait for the next cycle of the [Javascript event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) before using an
 object created in this way. Using `setTimeout()` with a timeout of zero is a way to achieve this:
 
-    newObj = document.createElement("object");
-    newObj.type = "x-mycompany/my-object";
-    
-    setTimeout(useNewObject, 0)
-    
-    function useNewObject() {
-        newObj.myfunc()
-    }
+```javascript
+newObj = document.createElement("object");
+newObj.type = "x-mycompany/my-object";
 
-### Do not creating an <object> as a child of an element that is not in the document
+setTimeout(useNewObject, 0)
 
-If you create an <object> without using `document.createElement()` by, for example
+function useNewObject() {
+  newObj.myfunc()
+}
+```
+
+### Do not create an \<object\> as a child of an element that is not in the document 
+
+
+If you create an \<object\> without using `document.createElement()` by, for example
 setting the `innerHTML` property of an element then it will not be detected
 by this polyfill if that element is not in the document.
 
 So for example, the following will not work:
+```javascript
+orphan = document.createElement("div");
+orphan.innerHTML = '<object type="x-mycompany/my-object"></object>';
 
-    orphan = document.createElement("div");
-    orphan.innerHTML = '<object type="x-mycompany/my-object"></object>';
-    
-    setTimeout(function() {
-        var newObj = orphan.getElementsByTagName("object")[0]
-        
-        newObj.myfunc(); // fails
-    }, 1);
+setTimeout(function() {
+  var newObj = orphan.getElementsByTagName("object")[0]
+  
+  newObj.myfunc(); // fails
+}, 1);
+```
 
-## Licence and Authors
+
+## License and Authors
 
 <img src="https://2immerse.eu/wp-content/uploads/2016/04/2-IMM_150x50.png" align="left"/><em>This project has been contributed by the British Broadcasting Corporation to the <a href="https://2immerse.eu/">2-IMMERSE</a> project which is co-funded by the European Commission’s <a hef="http://ec.europa.eu/programmes/horizon2020/">Horizon 2020</a> Research Programme</em>
 
