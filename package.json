@@ -11,6 +11,7 @@
     "type": "git",
     "url": "https://github.com/2-IMMERSE/oipf-object-polyfill"
   },
+  
   "main": "src/main.js",
   "author": {
     "name": "British Broadcasting Corporation",
